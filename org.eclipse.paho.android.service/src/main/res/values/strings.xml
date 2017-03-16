@@ -1,5 +1,5 @@
 <resources>
 
-    
+    <string name="mqtt_service_foreground_notification">org.eclipse.paho.android.service.MqttService.FOREGROUND_NOTIFICATION</string>
 
 </resources>

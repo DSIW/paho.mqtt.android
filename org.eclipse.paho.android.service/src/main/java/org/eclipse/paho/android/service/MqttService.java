@@ -228,6 +228,9 @@ public class MqttService extends Service implements MqttTraceHandler {
 	// Identifier for Intents, log messages, etc..
 	static final String TAG = "MqttService";
 
+	// Identifier for foreground service notification
+	static final int FOREGROUND_NOTIFICATION_ID = R.string.mqtt_service_foreground_notification;
+
 	// callback id for making trace callbacks to the Activity
 	// needs to be set by the activity as appropriate
 	private String traceCallbackId;
@@ -623,7 +626,19 @@ public class MqttService extends Service implements MqttTraceHandler {
     // create somewhere to buffer received messages until
     // we know that they have been passed to the application
     messageStore = new DatabaseMessageStore(this, this);
-	}
+
+    Intent notificationIntent = new Intent(this, MqttAndroidClient.class);
+    PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+            notificationIntent, 0);
+
+    Notification notification=new NotificationCompat.Builder(this)
+            .setSmallIcon(R.drawable.ic_camera_white_128px)
+            .setContentTitle("MQTT Service")
+            .setContentText("Running")
+            .setContentIntent(pendingIntent).build();
+
+    startForeground(FOREGROUND_NOTIFICATION_ID, notification);
+  }
 
 
 
